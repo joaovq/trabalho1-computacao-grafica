@@ -1,7 +1,7 @@
 #ifndef CENARIO_H_INCLUDED
 #define CENARIO_H_INCLUDED
 
-#include "terreno.h"
+#include "terrain.h"
 
 void drawScenario()
 {

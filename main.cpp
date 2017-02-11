@@ -13,7 +13,7 @@
 #include "objects.h"
 #include "scenario.h"
 
-#include "controle.h"
+#include "controls.h"
 	
 
 
