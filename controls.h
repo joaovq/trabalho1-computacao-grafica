@@ -22,7 +22,7 @@ double bulletGap = 0.0;
 
 GLfloat xObservator = 0.0;
 GLfloat yObservator = 5.0;
-GLfloat zObservator = 50.0;
+GLfloat zObservator = 47.0;
 
 GLfloat xObservatorEye = 0.0;
 GLfloat yObservatorEye = 0.0;
