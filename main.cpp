@@ -418,7 +418,7 @@ void cena()
         glTranslatef(xCan,yCan,zCan);
         glRotatef(giroCan,0.0,1.0,0.0);
         glTranslatef(-xCan,-yCan,-zCan);
-        canhao();
+        cannon();
     glPopMatrix();
 
     glPushMatrix();

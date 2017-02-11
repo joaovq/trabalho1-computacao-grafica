@@ -15,7 +15,7 @@ void drawScenario()
     glPushMatrix();
         glTranslatef(0, 0.0, -50);
         glRotatef(90.0, 1.0, 0.0, 0);
-        glColor3f(0.988,0.83,0.2509);        
+        glColor3f(0,1,1);        
         desenhaParede();
     glPopMatrix();
 

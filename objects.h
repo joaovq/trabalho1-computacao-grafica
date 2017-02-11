@@ -447,7 +447,7 @@ void rodaDoCanhao()
 }
 
 //desenha canhao
-void canhao()
+void cannon()
 {
     GLfloat mat_ambient[]= {0.4, 0.3, 0.4, 0.3};
     GLfloat mat_diffuse[]= {0.8, 0.8, 0.8, 0.8};
