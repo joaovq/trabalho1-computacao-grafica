@@ -173,14 +173,10 @@ void Terreno::calculaNormais() {
 }
 
 void Terreno::exibir() {
-    glBindTexture(GL_TEXTURE_2D, 1); // numero 1 escolhido anteriormente
-                                     // para identificar a textura
-    // Transladar o centro do terreno para a origem, porque no sistema de
-    // visualizacao adotado, o observador sempre olha para a origem
     glTranslatef(-(maxX-minX)/2, -(maxY-minY)/2, 0.0);
 
-    int nx=10,    // nx = numero de repetições da textura na direcao x
-        ny=10;    // idem para y
+    int nx=20,    // nx = numero de repetições da textura na direcao x
+        ny=20;    // idem para y
     double dx = (maxX-minX)/ nx; //dx*dy = area coberta por uma textura
     double dy = (maxY-minY)/ ny;
     int t = triangulos.size();
@@ -192,9 +188,7 @@ void Terreno::exibir() {
        Ponto p2 = pontos[v2];
        Ponto p3 = pontos[v3];
 
-       glEnable(GL_TEXTURE_2D);
-       glBindTexture(GL_TEXTURE_2D, 17);
-       glBegin(estiloDesenho);  //GL_LINE_LOOP  ou  GL_POLYGON
+       glBegin(estiloDesenho);  
           glNormal3f(normaisVert[v1].x, normaisVert[v1].y, normaisVert[v1].z);
           glTexCoord2f(p1.x/dx, p1.y/dy);
           glVertex3d(p1.x, p1.y, p1.z);
@@ -205,12 +199,7 @@ void Terreno::exibir() {
           glTexCoord2f(p3.x/dx, p3.y/dy);
           glVertex3d(p3.x, p3.y, p3.z);
        glEnd();
-       glDisable(GL_TEXTURE_2D);
     }
-}
-
-void Terreno::setEstiloDesenho(int est) {
-    estiloDesenho = est;
 }
 
 //*******************************************************************
@@ -243,14 +232,9 @@ void posicionaObservador() {
 GLfloat posicao_da_luz[]={300.0,300.0,600.0,1.0};
 
 
-void criaTerreno()
+void createTerrain()
 {
   glPushMatrix();
-    glTranslatef(40, 5.5, -25.0);
-    glRotatef(180.0, 0.0, 1.0, 0.0);
-    glRotatef(90, 1.0, 0.0, 0.0);
-    glScalef(0.3, 0.1, 0.70);
     terreno->exibir();
-
   glPopMatrix();
 }

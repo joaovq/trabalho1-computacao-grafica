@@ -3,42 +3,39 @@
 
 bool testeLuz = false;
 
-bool mirar = true;
-bool atirar = false;
-bool finnestShot= false;
-bool observadorTorreBool = false;
+bool aim = true;
+bool shoot = false;
 
-float  alphaCannon = 0;
-float thetaCannon  = 0;
+float   alphaCannon = 0;
+float   thetaCannon  = 0;
 
-GLfloat xMira = 0.0;
-GLfloat yMira = 0.0;
+GLfloat xAim = 0.0;
+GLfloat yAim = 0.0;
 
-GLfloat speedDiscoVoador = 0.001;
-GLfloat xDiscoAtual = 0, yDiscoAtual = 0.0, zDiscoAtual = 0;
-GLfloat xBalaAtual = 0, yBalaAtual = 0.0, zBalaAtual = 22;
+GLfloat speedSpaceShip = 0.001;
+GLfloat xCurrentShip = 0, yCurrentShip = 0.0, zCurrentShip = 0;
+GLfloat xCurrentBullet = 0, yCurrentBullet = 0.0, zCurrentBullet = 22;
 
 
-bool desenhaDiscoBool = true;
-double balaGap = 0.0;
+bool drawShipBool = true;
+double bulletGap = 0.0;
 
-GLfloat xObservador = 0.0;
-GLfloat yObservador = 5.0;
-GLfloat zObservador = 50.0;
+GLfloat xObservator = 0.0;
+GLfloat yObservator = 5.0;
+GLfloat zObservator = 50.0;
 
-GLfloat xObservadorEye = 0.0;
-GLfloat yObservadorEye = 0.0;
-GLfloat zObservadorEye = 0.0;
+GLfloat xObservatorEye = 0.0;
+GLfloat yObservatorEye = 0.0;
+GLfloat zObservatorEye = 0.0;
 
 // Observador
-GLfloat angObserv = 0.0;     // ângulo de rotação do observador em torno de Y
+GLfloat observAng = 0.0;     // ângulo de rotação do observador em torno de Y
 
-GLfloat zObservadorPosicao = 45.0;
+GLfloat zObservatorPosition = 45.0;
 
 //variaveis para escrever na tela
-int discosLancados = 1;
-int acertosDisco = 0;
-int bestScore;
+int lauchedShips = 1;
+int shipsHit = 0;
 
 
 double fRand(double fMin, double fMax)
@@ -51,34 +48,26 @@ double fRand(double fMin, double fMax)
 //ao recarregar bala volta pro canhao e movimento de tiro para
 void recarrega()
 {
-    atirar = false;
-    mirar = true;
-    balaGap = 0;
+    shoot = false;
+    aim = true;
+    bulletGap = 0;
 
 }
 
 void atira()
 {
-    if(mirar && !atirar)
+    if(aim && !shoot)
     {
         alphaCannon = camAng;
         thetaCannon = camTurning;
-        atirar = true;
+        shoot = true;
 
-        //mirar = false;
-        GLfloat deltax = xMira - xDiscoAtual;
-        GLfloat deltay = yMira - yDiscoAtual;
+        //aim = false;
+        GLfloat deltax = xAim - xCurrentShip;
+        GLfloat deltay = yAim - yCurrentShip;
 
         if(deltax >  -2.7 && deltax < 2.2 && deltay > -3.0 && deltay < 0)
-        {
-                finnestShot =true;
-                speedDiscoVoador = 0;
-
-        }
-        else
-        {
-                finnestShot = false;
-        }
+                speedSpaceShip = 0;
     }
 }
 
@@ -88,12 +77,12 @@ void mouseWheel(int button, int state,   int x, int y)
     switch(button)
     {
     case 3:
-        if(zObservadorPosicao < 94){
-        zObservadorPosicao = zObservadorPosicao + 0.2;
+        if(zObservatorPosition < 94){
+        zObservatorPosition = zObservatorPosition + 0.2;
         }
         break;
     case 4:
-        zObservadorPosicao = zObservadorPosicao - 0.2;
+        zObservatorPosition = zObservatorPosition - 0.2;
         break;
     }
 
@@ -121,7 +110,7 @@ void handleSpecialKeypress(int key, int x, int y)
         else
         {
             zCan = zCan - 0.1;
-            zBala = zBala - 0.1;
+            zBullet = zBullet - 0.1;
             wheelTurning = wheelTurning - 4.0;
 
         }
@@ -146,7 +135,7 @@ void handleSpecialKeypress(int key, int x, int y)
 
             wheelTurning = wheelTurning + 4.0;
             zCan = zCan + 0.1;
-            zBala = zBala + 0.1;
+            zBullet = zBullet + 0.1;
 
         }
     }
@@ -167,7 +156,7 @@ void handleSpecialKeypress(int key, int x, int y)
         {
 
             xCan = xCan - 0.1;
-            xBala = xBala - 0.1;
+            xBullet = xBullet - 0.1;
             wheelTurning = wheelTurning - 4.0;
 
         }
@@ -189,7 +178,7 @@ void handleSpecialKeypress(int key, int x, int y)
         else
         {
             xCan = xCan + 0.1;
-            xBala = xBala + 0.1;
+            xBullet = xBullet + 0.1;
             wheelTurning = wheelTurning - 4.0;
 
         }
@@ -227,27 +216,25 @@ void controle (unsigned char tecla, int x, int y)
             recarrega();
             break;
         case 'l':
-            if(desenhaDiscoBool == false){
+            if(drawShipBool == false){
                 ufoColor[0] = fRand(0, 1);
                 ufoColor[1] = fRand(0, 1);
                 ufoColor[2] = fRand(0, 1);
                 ufoColorRing[0] = ufoColor[0];
                 ufoColorRing[1] = ufoColor[1];
                 ufoColorRing[2] = ufoColor[2];
-                discosLancados++;
+                lauchedShips++;
             }
-            desenhaDiscoBool = true;
+            drawShipBool = true;
             break;
         case 'o':
-            if(observadorTorreBool == false)observadorTorreBool=true;
-            else observadorTorreBool = false;
             break;
         case 'v': //Tesste meu teclado nao funciona down arrow
             handleSpecialKeypress(GLUT_KEY_DOWN, 0 , 0);
 
             break;
-        case 'p': angObserv -= 1.0; break;
-        case 'P': angObserv += 1.0; break;
+        case 'p': observAng -= 1.0; break;
+        case 'P': observAng += 1.0; break;
     }
 
 }

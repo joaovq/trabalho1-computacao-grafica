@@ -98,7 +98,7 @@ GLfloat zObjeto()
 
 }
 
-void objetoMira(float x, float y)
+void objetoaim(float x, float y)
 {
 
 
@@ -127,9 +127,9 @@ void objetoMira(float x, float y)
     glPopMatrix();
 }
 
-void mira()
+void toAim()
 {
-    if(mirar)
+    if(aim)
     {
         float desloc = cos((camTurning*PI)/180.0)*zCan/cos((camAng*PI)/180.0);
 
@@ -137,15 +137,15 @@ void mira()
         float x = -sin((camTurning*PI)/180.0)*desloc;
 
 
-        x = xBala + x;
-        y = yBala + y;
+        x = xBullet + x;
+        y = yBullet + y;
 
         glPushMatrix();
-            objetoMira(x,y);
+            objetoaim(x,y);
         glPopMatrix();
 
-        xMira = x;
-        yMira = y;
+        xAim = x;
+        yAim = y;
 
     }
 }
@@ -173,7 +173,7 @@ double sorteiaSpeedDisco()
     double aux = (rand() / (static_cast<double>(RAND_MAX) + 1.0))* (max - min) + min;;
 
     //quanto mais discos são lançados a velocidade aumenta
-    return abs(aux)+((double)discosLancados/300.0);
+    return abs(aux)+((double)lauchedShips/300.0);
 }
 
 //volta disco pra horigem, seta nova velocidade e angulo de lancamento
@@ -181,24 +181,14 @@ void voltaDiscoPraOrigem()
 {	
     angDisk = 45 + sorteiaAng();
     gap = 0.1;
-    speedDiscoVoador = sorteiaSpeedDisco();
-    cout << speedDiscoVoador << endl;
+    speedSpaceShip = sorteiaSpeedDisco();
+    cout << speedSpaceShip << endl;
     gravidadeDisco = 0;
-
-    if(acertosDisco > bestScore){
-            ofstream myfile ("melhorScore.txt");
-
-            if (myfile.is_open()){
-                myfile << acertosDisco;
-                myfile.close();
-            }
-            else cout << "Erro ao abrir arquivo" << endl;
-    }
 }
 
 void moveDiscoVoador()
 {
-    if( yDiscoAtual < 0 )
+    if( yCurrentShip < 0 )
     {
         voltaDiscoPraOrigem();
         ufoColor[0] = fRand(0, 1);
@@ -207,22 +197,22 @@ void moveDiscoVoador()
 	    ufoColorRing[0] = ufoColor[0];
 	    ufoColorRing[1] = ufoColor[1];
 	    ufoColorRing[2] = ufoColor[2];
-	    discosLancados++;
+	    lauchedShips++;
     }
 
     float x = cos((angDisk*PI)/180.0)*gap;
     float y = sin((angDisk*PI)/180.0)*gap + gravidadeDisco;
 
     //valores somados e subtraidos aqui tem a ver com a translação inicial do disco
-    xDiscoAtual = x -15;
-    yDiscoAtual = y+3;
-    zDiscoAtual = 0;
+    xCurrentShip = x -15;
+    yCurrentShip = y+3;
+    zCurrentShip = 0;
 
     glTranslatef(x, y, 0);
 
-    gap = gap + speedDiscoVoador;
+    gap = gap + speedSpaceShip;
 
-    gravidadeDisco = gravidadeDisco - (sin((angDisk*PI)/180.0)*gap*speedDiscoVoador/36) ;
+    gravidadeDisco = gravidadeDisco - (sin((angDisk*PI)/180.0)*gap*speedSpaceShip/36) ;
 
     discoVoador();
 
@@ -265,9 +255,9 @@ void inicializaVetorDeColisao()
 
 void colisao()
 {
-    GLfloat deltax = xDiscoAtual - xBalaAtual;
-    GLfloat deltay = yDiscoAtual - yBalaAtual;
-    GLfloat deltaz = zDiscoAtual - zBalaAtual;
+    GLfloat deltax = xCurrentShip - xCurrentBullet;
+    GLfloat deltay = yCurrentShip - yCurrentBullet;
+    GLfloat deltaz = zCurrentShip - zCurrentBullet;
 
     if(deltax >  -2.5 && deltax < 2.5)
     {
@@ -278,14 +268,14 @@ void colisao()
 
                 //se acertar volta disco pra origem volta bala pro canhao e para de desenhar disco
                 //com desenha disco bool = false efeitos da colisao vão ser desenhados
-                desenhaDiscoBool = false;
+                drawShipBool = false;
                 voltaDiscoPraOrigem();
                 recarrega();
                 inicializaVetorDeColisao();
-                acertosDisco++;
-                coordenadascolisao[0] =xDiscoAtual;
-                coordenadascolisao[1] =yDiscoAtual;
-                coordenadascolisao[2] =zDiscoAtual;
+                shipsHit++;
+                coordenadascolisao[0] =xCurrentShip;
+                coordenadascolisao[1] =yCurrentShip;
+                coordenadascolisao[2] =zCurrentShip;
             }
         }
     }
@@ -293,38 +283,38 @@ void colisao()
 
 void movimentoBala()
 {
-    if(atirar)
+    if(shoot)
     {
-        float z = -cos((alphaCannon*PI)/180.0)*balaGap /  cos((thetaCannon*PI)/180.0);
-        float y = sin((alphaCannon*PI)/180.0)*balaGap;
-        float x = -sin((thetaCannon*PI)/180.0)*balaGap;
+        float z = -cos((alphaCannon*PI)/180.0)*bulletGap /  cos((thetaCannon*PI)/180.0);
+        float y = sin((alphaCannon*PI)/180.0)*bulletGap;
+        float x = -sin((thetaCannon*PI)/180.0)*bulletGap;
 
-        xBalaAtual = xBala + x;
-        yBalaAtual = yBala + y;
-        zBalaAtual = zBala + z;
+        xCurrentBullet = xBullet + x;
+        yCurrentBullet = yBullet + y;
+        zCurrentBullet = zBullet + z;
 
         glPushMatrix();
 
         glTranslatef(x,y, z);
 
         // Apos a bala "sumir" da tela, o canhão faz o reload automatico
-        if(balaGap >= 50 )
+        if(bulletGap >= 50 )
         {
             recarrega();
         }
 
-        balaGap = balaGap + speedBala;
-        glTranslatef( xBala, yBala, zBala );
+        bulletGap = bulletGap + speedBala;
+        glTranslatef( xBullet, yBullet, zBullet );
         glRotatef(thetaCannon, 0.0, 1.0,0.0 );
         glRotatef(alphaCannon, 1.0, 0.0,0.0 );
-        glTranslatef( -xBala,- yBala, -zBala );
+        glTranslatef( -xBullet,- yBullet, -zBullet );
         bullet();
         glPopMatrix();
         colisao();
     }
 }
 
-//fazer tudo que acontece depois da colisao AQUI --- desenhaDiscoBool é falso chama essa funcao
+//fazer tudo que acontece depois da colisao AQUI --- drawShipBool é falso chama essa funcao
 void efeitosPosColisao()
 {
     glTranslatef(coordenadascolisao[0], coordenadascolisao[1], coordenadascolisao[2]);
@@ -388,7 +378,7 @@ void efeitosPosColisao()
     }
 }
 
-//disco em sendo desenhado enquanto desenhaDiscoBool é true
+//disco em sendo desenhado enquanto drawShipBool é true
 void lancarDisco()
 {
     //Disco Voador
@@ -401,11 +391,6 @@ void cena()
 {
     glColor3f(objectColor[0],objectColor[1], objectColor[2] );
     
-    //Base
-    glPushMatrix();
-        lauchingBase();
-    glPopMatrix();
-
     //Canhao com a bala
     glPushMatrix();
         glTranslatef(xCan,yCan,zCan);
@@ -420,7 +405,7 @@ void cena()
 
     glPushMatrix();
         drawScenario();
-    mira();
+        toAim();
     glPopMatrix();
 
     gira();
@@ -432,7 +417,7 @@ void observador()
         glLoadIdentity();
         gluPerspective(60.0, 1.0, 1.0, 1000.0);
 
-		gluLookAt(xObservador, yObservador, zObservador, xObservadorEye, yObservadorEye, 0.0, 0.0, 1.0, 0.0);
+		gluLookAt(xObservator, yObservator, zObservator, xObservatorEye, yObservatorEye, 0.0, 0.0, 1.0, 0.0);
 
         glMatrixMode(GL_MODELVIEW);
 }
@@ -442,11 +427,11 @@ void exibe()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
-        glRotatef(angObserv,0.0,1.0,0.0);
+        glRotatef(observAng,0.0,1.0,0.0);
         cena();
-        if(desenhaDiscoBool == true)
+        if(drawShipBool == true)
             lancarDisco();
-        if(desenhaDiscoBool == false)
+        if(drawShipBool == false)
             efeitosPosColisao();
     glPopMatrix();
 
@@ -517,7 +502,7 @@ int main(int argc, char** argv)
     IoSpeedCentral = 0.1;
     IoSpeedFaixa   = 0.5;
     IoAng +=1;
-    speedDiscoVoador = sorteiaSpeedDisco(); //sorteio da primeira velocidade de lancamento deve ser feita aqui
+    speedSpaceShip = sorteiaSpeedDisco(); //sorteio da primeira velocidade de lancamento deve ser feita aqui
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

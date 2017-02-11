@@ -1,7 +1,7 @@
 #ifndef OBJECTS_H_INCLUDED
 #define OBJECTS_H_INCLUDED
 
-GLfloat xBala = 0, yBala = 1.7, zBala = 40;
+GLfloat xBullet = 0, yBullet = 1.7, zBullet = 40;
 GLfloat xCan = 0, yCan = 0.15, zCan = 40;
 int  discoTurning = 0;
 GLfloat wheelTurning = 0.0;
@@ -135,8 +135,8 @@ void cylinder()
 //desenha bala
 void bullet()
 {
-    glTranslatef(xBala,yBala,zBala);
-    GLfloat xBala = 0, yBala = -5.0, zBala = 22;
+    glTranslatef(xBullet,yBullet,zBullet);
+    GLfloat xBullet = 0, yBullet = -5.0, zBullet = 22;
 
     glRotatef(180,0.0,1.0,0.0);
     glScalef(0.3,0.3,0.3);
@@ -354,20 +354,8 @@ void cannon()
 void lauchingBase()
 {
     GLfloat yBaseL = 2.0;
-    glColor3f(1.0, 1.0, 1.0);
-    GLfloat mat_ambient[]= {0.4, 0.3, 0.4, 0.3};
-    GLfloat mat_diffuse[]= {0.5, 0.5, 0.5, 0.5};
-    GLfloat mat_specular[]= {0.6,0.6,0.6, 1.0};
-    GLfloat mat_shininess= {1000.0};
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 16);
+    glColor3f(0.55, 0.25, 0.55);
+    
     //Frente da caixa
     glPushMatrix();
         glTranslatef(-11.0, yBaseL, 0.0);
@@ -400,8 +388,6 @@ void lauchingBase()
         glScalef(4.0, 0.3, 3.0);
         cube();
     glPopMatrix();
-
-    glDisable(GL_TEXTURE_2D);
 }
 
 #endif // OBJECTS_H_INCLUDED
