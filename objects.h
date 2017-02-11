@@ -3,11 +3,10 @@
 
 GLfloat xBala = 0, yBala = 1.7, zBala = 40;
 GLfloat xCan = 0, yCan = 0.15, zCan = 40;
-int  giraDisco = 0;
-float giraSol = 0;
-GLfloat giroRoda = 0.0;
+int  discoTurning = 0;
+GLfloat wheelTurning = 0.0;
 
-float angCan = 0, giroCan = 0;
+float camAng = 0, camTurning = 0;
 
 
 GLfloat vertices[][3] = {{-1.0,-1.0,-1.0},{1.0,-1.0,-1.0},
@@ -22,25 +21,13 @@ GLfloat moonColor   [3] = {1.0,1.0,1.0};
 GLfloat red   [3] = {1.0,0.0,0.0 };
 GLfloat blue   [3] = {0.0, 1.0, 0.0};
 
-void desenhaTriangulo()
+void drawTriangle()
 {
     glBegin(GL_POLYGON);
         glVertex2f(0.0, 1.0  );
         glVertex2f(-1.0,-0.27 );
         glVertex2f(1.0,-0.27 );
     glEnd();
-}
-
-void desenhaPa()
-{
-    glBegin(GL_POLYGON);
-    glVertex2f(0.0,1.0);
-    glVertex2f(-1.0,-1.0);
-    glVertex2f(-1.0,-2.0);
-    glVertex2f(1.0,-2.0);
-    glVertex2f(1.0,-1.0);
-    glEnd();
-
 }
 
 void polygon(int a, int b, int c, int d)
@@ -78,7 +65,7 @@ void cube()
     polygon(0,1,5,4);
 }
 
-void desenhaParede()
+void drawWall()
 {
     glScalef(200.0,0.1, 200.0 );
     glBegin(GL_POLYGON);
@@ -98,7 +85,7 @@ void desenhaParede()
     glEnd();
 }
 
-void desenhaChao()
+void drawFloor()
 {
     glScalef(1.0, 0.1, 1.0 );
     glBegin(GL_POLYGON);
@@ -118,14 +105,14 @@ void desenhaChao()
 
 }
 
-void esfera()
+void ball()
 {
     //glColor3f(objectColor[0],objectColor[1], objectColor[2] );
     glutSolidSphere(2.0, 100, 10);
 
 }
 
-void meiaEsfera()
+void partialBall()
 {
     glEnable(GL_CLIP_PLANE0);
     GLdouble eqn[4] = {0.0, 1.0, 0.0, 0.0};
@@ -135,7 +122,7 @@ void meiaEsfera()
 }
 
 // modelo de cilindro com eixo em Z e thetaCannonbase em Z=0
-void cilindro()
+void cylinder()
 {
     float raio = 1.0;
     float alt = 1.0;
@@ -146,7 +133,7 @@ void cilindro()
 
 
 //desenha bala
-void bala()
+void bullet()
 {
     glTranslatef(xBala,yBala,zBala);
     GLfloat xBala = 0, yBala = -5.0, zBala = 22;
@@ -155,153 +142,16 @@ void bala()
     glScalef(0.3,0.3,0.3);
 
     glPushMatrix();
-    glTranslatef(0.0,0.0,2.0);
-    glScalef(0.5,0.5,1.0);
-    esfera();
+        glTranslatef(0.0,0.0,2.0);
+        glScalef(0.5,0.5,1.0);
+        ball();
     glPopMatrix();
 
     glPushMatrix();
-    glScalef(1.0,1.0,2.0);
-    cilindro();
+        glScalef(1.0,1.0,2.0);
+        cylinder();
     glPopMatrix();
 }
-
-void luzDiscoVoador()
-{
-    glPushMatrix();
-        glColor3f(red[0], red[1], red[2]);
-        glPushMatrix();
-        
-            glTranslatef(-2.0, 0.4, 0.0);
-            GLfloat light_ambient[]= {red[0], red[1], red[2], 1.0};
-            GLfloat light_diffuse[]= {red[0], red[1], red[2], 1.0};
-            GLfloat light_specular[]= {red[0], red[1], red[2], 1.0};
-            GLfloat light_position[]= {0.0, 0.0, 0.0, 1.0};
-
-            glLightfv(GL_LIGHT3, GL_AMBIENT, light_ambient);
-            glLightfv(GL_LIGHT3, GL_DIFFUSE, light_diffuse);
-            glLightfv(GL_LIGHT3, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT3, GL_POSITION, light_position);
-            glLightf(GL_LIGHT3, GL_QUADRATIC_ATTENUATION, 8.0);
-
-
-            GLfloat mat_ambient[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_diffuse[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_specular[]= {1.0,1.0,1.0, 1.0};
-            GLfloat mat_shininess= {1000.0};
-
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-            glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess);
-            glColorMaterial(GL_FRONT_AND_BACK, 8.0);
-            glScalef(0.1, 0.1, 0.1);
-            cube();
-        glPopMatrix();
-        glPushMatrix();
-            glTranslatef(2.0, 0.4, 0.0);
-            GLfloat light_ambient2[]= {red[0], red[1], red[2], 1.0};
-            GLfloat light_diffuse2[]= {red[0], red[1], red[2], 1.0};
-            GLfloat light_specular2[]= {red[0], red[1], red[2], 1.0};
-            GLfloat light_position2[]= {0.0, 0.0, 0.0, 1.0};
-
-            glLightfv(GL_LIGHT4, GL_AMBIENT, light_ambient2);
-            glLightfv(GL_LIGHT4, GL_DIFFUSE, light_diffuse2);
-            glLightfv(GL_LIGHT4, GL_SPECULAR, light_specular2);
-            glLightfv(GL_LIGHT4, GL_POSITION, light_position2);
-            glLightf(GL_LIGHT4, GL_QUADRATIC_ATTENUATION, 8.0);
-
-            
-            GLfloat mat_ambient2[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_diffuse2[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_specular2[]= {1.0,1.0,1.0, 1.0};
-            GLfloat mat_shininess2= {1000.0};
-
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient2);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse2);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular2);
-            glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess2);
-            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-            glScalef(0.1, 0.1, 0.1);
-            cube();
-        glPopMatrix();
-    glPopMatrix();
-
-    glPushMatrix();
-        glColor3f(blue[0], blue[1], blue[2]);
-        glPushMatrix();
-            glTranslatef(0.0, 0.4, -2.0);
-            GLfloat light_ambient3[]= {blue[0], blue[1], blue[2], 1.0};
-            GLfloat light_diffuse3[]= {blue[0], blue[1], blue[2], 1.0};
-            GLfloat light_specular3[]= {blue[0], blue[1], blue[2], 1.0};
-            GLfloat light_position3[]= {0.0, 0.0, 0.0, 1.0};
-
-            glLightfv(GL_LIGHT5, GL_AMBIENT, light_ambient3);
-            glLightfv(GL_LIGHT5, GL_DIFFUSE, light_diffuse3);
-            glLightfv(GL_LIGHT5, GL_SPECULAR, light_specular3);
-            glLightfv(GL_LIGHT5, GL_POSITION, light_position3);
-            glLightf(GL_LIGHT5, GL_QUADRATIC_ATTENUATION, 8.0);
-            
-            GLfloat mat_ambient3[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_diffuse3[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_specular3[]= {1.0,1.0,1.0, 1.0};
-            GLfloat mat_shininess3= {1000.0};
-
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient3);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse3);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular3);
-            glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess3);
-            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-            glScalef(0.1, 0.1, 0.1);
-            cube();
-        glPopMatrix();
-        glPushMatrix();
-            glTranslatef(0.0, 0.4, 2.0);
-            GLfloat light_ambient4[]= {blue[0], blue[1], blue[2], 1.0};
-            GLfloat light_diffuse4[]= {blue[0], blue[1], blue[2], 1.0};
-            GLfloat light_specular4[]= {blue[0], blue[1], blue[2], 1.0};
-            GLfloat light_position4[]= {0.0, 0.0, 0.0, 1.0};
-
-            glLightfv(GL_LIGHT6, GL_AMBIENT, light_ambient4);
-            glLightfv(GL_LIGHT6, GL_DIFFUSE, light_diffuse4);
-            glLightfv(GL_LIGHT6, GL_SPECULAR, light_specular4);
-            glLightfv(GL_LIGHT6, GL_POSITION, light_position4);
-            glLightf(GL_LIGHT6, GL_QUADRATIC_ATTENUATION, 8.0);
-
-            
-            GLfloat mat_ambient4[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_diffuse4[]= {1.0, 1.0, 1.0, 1.0};
-            GLfloat mat_specular4[]= {1.0,1.0,1.0, 1.0};
-            GLfloat mat_shininess4= {1000.0};
-
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient4);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse4);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular4);
-            glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess4);
-            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-            glScalef(0.1, 0.1, 0.1);
-            cube();
-        glPopMatrix();
-    glPopMatrix();
-}
-
-void antenaDiscoVoador(){
-
-	glPushMatrix();
-	glRotatef(90, 1, 0, 0);
-	glScalef(0.1, 0.1, 2.0);
-	glTranslatef(0, 0.0, -1.8);
-	cilindro();
-	glPopMatrix();
-
-	glPushMatrix();
-	glScalef(0.15, 0.15, 0.15);
-	glTranslatef(0, 25, 0);
-	glColor3f(red[0], red[1], red[2]);
-	esfera();
-	glPopMatrix();
-}
-
 
 //desenha disco voador
 void discoVoador()
@@ -311,28 +161,28 @@ void discoVoador()
 
     //disco esterno
     glPushMatrix();
-    glRotatef(giraDisco, 0.0, 1.0, 0);
-    luzDiscoVoador();
-    glScalef(1.3, 0.3, 1.3);
-    glColor3f(ufoColor[0], ufoColor[1], ufoColor[2]);
-    esfera();
+        glRotatef(discoTurning, 0.0, 1.0, 0);
+        glScalef(1.3, 0.3, 1.3);
+        glColor3f(ufoColor[0], ufoColor[1], ufoColor[2]);
+        ball();
     glPopMatrix();
 
     //cabine, bola do meio
     glColor3f(ufoColorRing[0], ufoColorRing[1], ufoColorRing[2]);
     glPushMatrix();
-    glScalef(0.6,1.2, 0.6);
-    meiaEsfera();
+        glScalef(0.6,1.2, 0.6);
+        partialBall();
     glPopMatrix();
+    
     glPushMatrix();
-    glRotatef(180, 0.0, 0.0, 1.0);
-    glScalef(0.9,0.4, 0.9);
-    meiaEsfera();
+        glRotatef(180, 0.0, 0.0, 1.0);
+        glScalef(0.9,0.4, 0.9);
+        partialBall();
     glPopMatrix();
 
 }
 
-void modeloRoda()
+void wheelModel()
 {
     glPushMatrix();
     glTranslatef(0.0,0.1,0.0);
@@ -351,23 +201,23 @@ void modeloRoda()
 
     
         glPushMatrix();
-        glTranslatef(0.0,1.0,0.0);
-        glRotatef(45.0,0.0,0.0,1.0);
-        glScalef(0.08,1.0,0.1);
-        cube();
+            glTranslatef(0.0,1.0,0.0);
+            glRotatef(45.0,0.0,0.0,1.0);
+            glScalef(0.08,1.0,0.1);
+            cube();
         glPopMatrix();
 
         glPushMatrix();
-        glTranslatef(0.0,1.0,0.0);
-        glRotatef(90.0,0.0,0.0,1.0);
-        glScalef(0.08,1.0,0.1);
-        cube();
+            glTranslatef(0.0,1.0,0.0);
+            glRotatef(90.0,0.0,0.0,1.0);
+            glScalef(0.08,1.0,0.1);
+            cube();
         glPopMatrix();
 
         glPushMatrix();
-        glTranslatef(0.0,1.0,0.0);
-        glScalef(0.08,1.,0.1);
-        cube();
+            glTranslatef(0.0,1.0,0.0);
+            glScalef(0.08,1.,0.1);
+            cube();
         glPopMatrix();
 
         glDisable(GL_TEXTURE_2D);
@@ -377,13 +227,13 @@ void modeloRoda()
         glColor3f(0.1,0.1,0.1);
         glTranslatef(0.0,1.0,0.0);
         glScalef(1.02,1.02,0.3);
-        cilindro();
+        cylinder();
     glPopMatrix();
 
     glPopMatrix();
 }
 
-void eixoCanhao()
+void cannonSupport()
 {
     //Cor do eixo
     glColor3f(0.1,0.1,0.1);
@@ -391,55 +241,54 @@ void eixoCanhao()
     //Eixo
     glPushMatrix();
       glTranslatef(xCan-1.0,0.1,0.0);
-      glRotatef(angCan,1.0,0.0,0.0);
+      glRotatef(camAng,1.0,0.0,0.0);
       glRotatef(90,0.0,1.0,0.0);
       glScalef(0.2,0.2,2.3);
-      cilindro();
+      cylinder();
     glPopMatrix();
 
     //Ponta daq esquerda
     glPushMatrix();
 
       glTranslatef(xCan-1.0,0.1,0.0);
-      glRotatef(angCan,1.0,0.0,0.0);
+      glRotatef(camAng,1.0,0.0,0.0);
       glRotatef(90,0.0,0.0,1.0);
       glScalef(0.1,0.1,0.1);
-      meiaEsfera();
+      partialBall();
     glPopMatrix();
 
     //Ponta daq esquerda
     glPushMatrix();
       glTranslatef(xCan +1.25,0.1,0.0);
-      glRotatef(angCan,1.0,0.0,0.0);
+      glRotatef(camAng,1.0,0.0,0.0);
       glRotatef(-90,0.0,0.0,1.0);
       glScalef(0.1,0.1,0.1);
-      meiaEsfera();
+      partialBall();
     glPopMatrix();
 }
 
-void rodaDoCanhao()
+void cannonWheels()
 {
-
     glPushMatrix();
 
     glPushMatrix();
         glTranslatef(xCan +1.0,0.0,zCan);
         glTranslatef(0.0,1.0,0.0);
-        glRotatef(giroRoda,1.0,0.0,0.0);
-        glRotatef(-giroCan,1.0,0.0,0.0);
+        glRotatef(wheelTurning,1.0,0.0,0.0);
+        glRotatef(-camTurning,1.0,0.0,0.0);
         glTranslatef(0.0,-1.0,0.0);
         glRotatef(90,0.0,1.0,0.0);
-        modeloRoda();
+        wheelModel();
     glPopMatrix();
 
     glPushMatrix();
         glTranslatef(xCan -1.0,0.0,zCan);
         glTranslatef(0.0,1.0,0.0);
-        glRotatef(giroCan,1.0,0.0,0.0);
-        glRotatef(giroRoda,1.0,0.0,0.0);
+        glRotatef(camTurning,1.0,0.0,0.0);
+        glRotatef(wheelTurning,1.0,0.0,0.0);
         glTranslatef(0.0,-1.0,0.0);
         glRotatef(90,0.0,1.0,0.0);
-        modeloRoda();
+        wheelModel();
     glPopMatrix();
 
 
@@ -466,7 +315,7 @@ void cannon()
     //Tubo do canhao
       glPushMatrix();
         glTranslatef(xCan,1.5,zCan);
-        glRotatef(angCan,1.0,0.0,0.0);
+        glRotatef(camAng,1.0,0.0,0.0);
 
         glPushMatrix();
           glColor3f(0.1,0.1,0.1);
@@ -474,7 +323,7 @@ void cannon()
           glRotatef(180,0.0,1.0,0.0);
           glTranslatef(0.0,0.0,-1.2);
           glScalef(0.4,0.4,3.5);
-          cilindro();
+          cylinder();
         glPopMatrix();
 
         glPushMatrix();
@@ -483,125 +332,26 @@ void cannon()
           glRotatef(90,0.0,1.0,0.0);
           glRotatef(90,0.0,0.0,1.0);
           glScalef(0.2,0.2,0.2);
-          meiaEsfera();
+          partialBall();
         glPopMatrix();
       glPopMatrix();
 
       glPushMatrix();
-      glTranslatef(-0.125,1.0,zCan);
-      eixoCanhao();
+        glTranslatef(-0.125,1.0,zCan);
+        cannonSupport();
       glPopMatrix();
     glPopMatrix();
 
     //Roda e eixo
     glPushMatrix();
-    glTranslatef(-0.13,0.0,-0.0);
-    rodaDoCanhao();
+        glTranslatef(-0.13,0.0,-0.0);
+        cannonWheels();
     glPopMatrix();
 
-}
-
-void desenhaTorreObservacao(){
-    double alturaPilarBase = 12;
-    glColor3f(1.0,1.0,1.0);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 15);
-    //PilaresBase da Torre
-    glPushMatrix();
-
-        glPushMatrix();
-            glTranslatef(-3, 0, 0);
-            glScalef(0.3, alturaPilarBase, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(3, 0, 0);
-            glScalef(0.3, alturaPilarBase, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(-3, 0, 6);
-            glScalef(0.3, alturaPilarBase, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(3, 0, 6);
-            glScalef(0.3, alturaPilarBase, 0.3);
-            cube();
-        glPopMatrix();
-    glPopMatrix();
-
-    //Escada
-    glPushMatrix();
-
-        glPushMatrix();
-            glTranslatef(-1.5, 6, 6);
-            glScalef(1.5, 0.3, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(-1.5, 4, 6);
-            glScalef(1.5, 0.3, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(-1.5, 2, 6);
-            glScalef(1.5, 0.3, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(0, 0, 6);
-            glScalef(0.3, alturaPilarBase, 0.3);
-            cube();
-        glPopMatrix();
-
-    glPopMatrix();
-
-    //Piso
-    glPushMatrix();
-        float xTorre = 2.75, yTorre = 0.3, zTorre = 3;
-
-        glPushMatrix();
-            glTranslatef(0, (yTorre/2)+alturaPilarBase-4, (zTorre));
-            glScalef(xTorre+0.55, yTorre, zTorre+0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(0, alturaPilarBase-0.3, 0);
-            glScalef(3, 0.3, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(1.5, alturaPilarBase-0.3, 6);
-            glScalef(1.5, 0.3, 0.3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(3, alturaPilarBase-0.3, 3);
-            glScalef(0.3, 0.3, 3);
-            cube();
-        glPopMatrix();
-
-        glPushMatrix();
-            glTranslatef(-3, alturaPilarBase-0.3, 3);
-            glScalef(0.3, 0.3, 3);
-            cube();
-        glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
 }
 
 //desenha base lancamento
-void baseDeLancamento()
+void lauchingBase()
 {
     GLfloat yBaseL = 2.0;
     glColor3f(1.0, 1.0, 1.0);
@@ -653,74 +403,5 @@ void baseDeLancamento()
 
     glDisable(GL_TEXTURE_2D);
 }
-
-void desenhaPoste(){
-    
-    glPushMatrix();
-
-        GLfloat light_ambient[]= {1.0, 1.0, 1.0, 1.0};
-        GLfloat light_diffuse[]= {1.0, 1.0, 1.0, 1.0};
-        GLfloat light_specular[]= {1.0,1.0,1.0, 1.0};
-        GLfloat light_position[]= {-3.2,11.0,0.0, 1.0};
-        GLfloat spot_direction[]= {0.0, -8.0, 0.0};
-
-        glLightfv(GL_LIGHT2, GL_AMBIENT, light_ambient);
-        glLightfv(GL_LIGHT2, GL_DIFFUSE, light_diffuse);
-        glLightfv(GL_LIGHT2, GL_SPECULAR, light_specular);
-        glLightfv(GL_LIGHT2, GL_POSITION, light_position);
-        //glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0);
-        //glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.9);
-        glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.015);
-
-
-        glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 60.0);
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, spot_direction);
-        glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 0.5);
-        
-        GLfloat mat_ambient[]= {0.7, 0.5, 0.7, 1.0};
-        GLfloat mat_diffuse[]= {1.0, 1.0, 1.0, 1.0};
-        GLfloat mat_specular[]= {1.0,1.0,1.0, 1.0};
-        GLfloat mat_shininess= {1000.0};
-
-        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-        glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-        glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess);
-        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-       
-
-        glColor3f(1.0,1.0,1.0);
-        glTranslatef(-2.0,10.0,0.0);
-        glRotatef(135,0.0,0.0,1.0);
-        glScalef(0.4,0.3,0.2);
-        meiaEsfera();
-    glPopMatrix();
-    
-    glPushMatrix();
-        glColor3f(0.0,0.0,0.0);
-        glTranslatef(-2.0,10.0,0.0);
-        glRotatef(-45,0.0,0.0,1.0);
-        glScalef(0.5,0.15,0.3);
-        esfera();
-    glPopMatrix();
-
-    glPushMatrix();
-        glColor3f(0.0,0.0,0.0);
-        glTranslatef(0.0,8.5,0.0);
-        glRotatef(50,0.0,0.0,1.0);
-        glScalef(0.2,3.0,0.2);
-        glRotatef(-90.0,1.0,0.0,0.0);
-        cilindro();
-    glPopMatrix();
-
-    glPushMatrix();
-        glColor3f(0.0,0.0,0.0);
-        glScalef(0.3,9.0,0.3);
-        glRotatef(-90.0,1.0,0.0,0.0);
-        cilindro();
-    glPopMatrix();
-}
-
-
 
 #endif // OBJECTS_H_INCLUDED

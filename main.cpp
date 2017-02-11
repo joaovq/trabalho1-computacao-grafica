@@ -106,9 +106,9 @@ void objetoMira(float x, float y)
     glColor3f(1.0, 0.0, 0.0);
 
     glPushMatrix();
-    glTranslatef(x, y, 2.5);
-    glScalef(0.4, 0.4, 0.2);
-    cilindro();
+        glTranslatef(x, y, 2.5);
+        glScalef(0.4, 0.4, 0.2);
+        cylinder();
     glPopMatrix();
 
     glPushMatrix();
@@ -131,10 +131,10 @@ void mira()
 {
     if(mirar)
     {
-        float desloc = cos((giroCan*PI)/180.0)*zCan/cos((angCan*PI)/180.0);
+        float desloc = cos((camTurning*PI)/180.0)*zCan/cos((camAng*PI)/180.0);
 
-        float y = sin((angCan*PI)/180.0)*desloc;
-        float x = -sin((giroCan*PI)/180.0)*desloc;
+        float y = sin((camAng*PI)/180.0)*desloc;
+        float x = -sin((camTurning*PI)/180.0)*desloc;
 
 
         x = xBala + x;
@@ -153,14 +153,7 @@ void mira()
 //gira circulo externo do disco
 void gira()
 {
-
-    giraDisco += 4;
-    giraSol += 0.42;
-    if( giraDisco > 360.0 )
-        giraDisco -= 360.0;
-    if(giraSol > 360.0)
-    	giraSol -= 360.0;
-
+    discoTurning += 4;
 }
 
 //retorna angulo sorteado dado angulo informado na entrada
@@ -325,7 +318,7 @@ void movimentoBala()
         glRotatef(thetaCannon, 0.0, 1.0,0.0 );
         glRotatef(alphaCannon, 1.0, 0.0,0.0 );
         glTranslatef( -xBala,- yBala, -zBala );
-        bala();
+        bullet();
         glPopMatrix();
         colisao();
     }
@@ -360,7 +353,7 @@ void efeitosPosColisao()
     	GLfloat z = zObjeto();
 
         glColor3f(ufoColor[0], ufoColor[1], ufoColor[2]);
-        desenhaTriangulo();
+        drawTriangle();
         glPopMatrix();
 
         glPopMatrix();
@@ -410,13 +403,13 @@ void cena()
     
     //Base
     glPushMatrix();
-        baseDeLancamento();
+        lauchingBase();
     glPopMatrix();
 
     //Canhao com a bala
     glPushMatrix();
         glTranslatef(xCan,yCan,zCan);
-        glRotatef(giroCan,0.0,1.0,0.0);
+        glRotatef(camTurning,0.0,1.0,0.0);
         glTranslatef(-xCan,-yCan,-zCan);
         cannon();
     glPopMatrix();

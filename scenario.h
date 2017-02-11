@@ -5,24 +5,18 @@
 
 void drawScenario()
 {
-	// glPushMatrix();
- //    	glRotatef(-giraSol, 0, 0.0, 1);
- //        desenhaSol();
- //        desenhaLua();
- //    glPopMatrix();
-
     //parede de fundo
     glPushMatrix();
         glTranslatef(0, 0.0, -50);
         glRotatef(90.0, 1.0, 0.0, 0);
         glColor3f(0,1,1);        
-        desenhaParede();
+        drawWall();
     glPopMatrix();
 
     //chão
     glPushMatrix();
         glColor3f(0, 1, 0);
-        desenhaParede();
+        drawWall();
     glPopMatrix();
 
     //Terreno

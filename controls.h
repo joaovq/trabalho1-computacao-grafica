@@ -61,8 +61,8 @@ void atira()
 {
     if(mirar && !atirar)
     {
-        alphaCannon = angCan;
-        thetaCannon = giroCan;
+        alphaCannon = camAng;
+        thetaCannon = camTurning;
         atirar = true;
 
         //mirar = false;
@@ -109,20 +109,20 @@ void handleSpecialKeypress(int key, int x, int y)
 
     case GLUT_KEY_UP:
     {
-        if(giroCan > 1.0)
+        if(camTurning > 1.0)
         {
-            giroCan = giroCan - 1.0;
+            camTurning = camTurning - 1.0;
 
         }
-        else if(giroCan < 1.0)
+        else if(camTurning < 1.0)
         {
-            giroCan = giroCan + 1.0;
+            camTurning = camTurning + 1.0;
         }
         else
         {
             zCan = zCan - 0.1;
             zBala = zBala - 0.1;
-            giroRoda = giroRoda - 4.0;
+            wheelTurning = wheelTurning - 4.0;
 
         }
 
@@ -132,19 +132,19 @@ void handleSpecialKeypress(int key, int x, int y)
 
     case GLUT_KEY_DOWN:
     {
-        if(giroCan > 1.0)
+        if(camTurning > 1.0)
         {
-            giroCan = giroCan - 1.0;
+            camTurning = camTurning - 1.0;
 
         }
-        else if(giroCan < 0)
+        else if(camTurning < 0)
         {
-            giroCan = giroCan + 1.0;
+            camTurning = camTurning + 1.0;
         }
         else
         {
 
-            giroRoda = giroRoda + 4.0;
+            wheelTurning = wheelTurning + 4.0;
             zCan = zCan + 0.1;
             zBala = zBala + 0.1;
 
@@ -154,21 +154,21 @@ void handleSpecialKeypress(int key, int x, int y)
 
     case GLUT_KEY_LEFT:
     {
-        if(giroCan > 91.0)
+        if(camTurning > 91.0)
         {
-            giroCan = giroCan - 1.0;
+            camTurning = camTurning - 1.0;
 
         }
-        else if(giroCan < 90)
+        else if(camTurning < 90)
         {
-            giroCan = giroCan + 1.0;
+            camTurning = camTurning + 1.0;
         }
         else
         {
 
             xCan = xCan - 0.1;
             xBala = xBala - 0.1;
-            giroRoda = giroRoda - 4.0;
+            wheelTurning = wheelTurning - 4.0;
 
         }
     }
@@ -177,20 +177,20 @@ void handleSpecialKeypress(int key, int x, int y)
     case GLUT_KEY_RIGHT:
     {
 
-        if(giroCan > -90 )
+        if(camTurning > -90 )
         {
-            giroCan = giroCan - 1.0;
+            camTurning = camTurning - 1.0;
 
         }
-        else if(giroCan > -89.1 )
+        else if(camTurning > -89.1 )
         {
-            giroCan = giroCan + 1.0;
+            camTurning = camTurning + 1.0;
         }
         else
         {
             xCan = xCan + 0.1;
             xBala = xBala + 0.1;
-            giroRoda = giroRoda - 4.0;
+            wheelTurning = wheelTurning - 4.0;
 
         }
     }
@@ -212,16 +212,16 @@ void controle (unsigned char tecla, int x, int y)
             atira();
             break; /*Espaco para atirar*/
         case 'w':
-            if (angCan < 30.0) angCan += 1.0;
+            if (camAng < 30.0) camAng += 1.0;
             break;
         case 's':
-            if (angCan > 0.0) angCan -= 1.0;
+            if (camAng > 0.0) camAng -= 1.0;
             break;
         case 'a':
-            if (giroCan < 35.0) giroCan += 1.0;
+            if (camTurning < 35.0) camTurning += 1.0;
             break;
         case 'd':
-            if (giroCan > -45.0) giroCan -= 1.0;
+            if (camTurning > -45.0) camTurning -= 1.0;
             break;
         case 'r':
             recarrega();
