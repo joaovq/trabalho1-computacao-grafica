@@ -83,9 +83,7 @@ Terreno::Terreno() {
     arq_entrada.open("terreno.tri");
     double x,y,z;
     int nPontos;
-    cout << "Leitura dos dados do terreno" << endl;
     arq_entrada >> nPontos;
-    cout << "Numero de vertices: " << nPontos << endl;
     minX = DBL_MAX;  maxX = DBL_MIN;
     minY = DBL_MAX;  maxY = DBL_MIN;
     for (int i=0; i<nPontos; i++) {
@@ -100,14 +98,12 @@ Terreno::Terreno() {
     int v1,v2,v3;
     int nTriangs;
     arq_entrada >> nTriangs;
-    cout << "Numero de triangulos: " << nTriangs << endl;
     for (int i=0; i<nTriangs; i++) {
         arq_entrada >> v1 >> v2 >> v3;
         Triangulo T(v1,v2,v3);
         triangulos.push_back(T);
     }
     arq_entrada.close();
-    cout << "Fim da leitura" << endl;
     calculaNormais();
 
     estiloDesenho = GL_POLYGON;
