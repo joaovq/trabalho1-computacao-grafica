@@ -21,7 +21,7 @@ double bulletGap = 0.0;
 
 GLfloat xObservator = 0.0;
 GLfloat yObservator = 5.0;
-GLfloat zObservator = 47.0;
+GLfloat zObservator = 45.0;
 
 GLfloat xObservatorEye = 0.0;
 GLfloat yObservatorEye = 0.0;
@@ -32,7 +32,6 @@ GLfloat observAng = 0.0;     // ângulo de rotação do observador em torno de Y
 
 GLfloat zObservatorPosition = 45.0;
 
-//variaveis para escrever na tela
 int lauchedDiscs = 1;
 
 double fRand(double fMin, double fMax)
@@ -56,13 +55,6 @@ void shoot()
         alphaCannon = camAng;
         thetaCannon = camTurning;
         isShooting = true;
-
-        //isAiming = false;
-        GLfloat deltax = xAim - xCurrentDisc;
-        GLfloat deltay = yAim - yCurrentDisc;
-
-        if(deltax >  -2.7 && deltax < 2.2 && deltay > -3.0 && deltay < 0)
-            speedDisc = 0;
     }
 }
 

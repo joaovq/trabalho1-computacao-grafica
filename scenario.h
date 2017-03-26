@@ -15,8 +15,11 @@ void drawScenario()
 
     //chão
     glPushMatrix();
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 1);
         glColor3f(0, 1, 0);
         drawWall();
+        glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
     //Montanha da direita
@@ -26,7 +29,10 @@ void drawScenario()
         glRotatef(180.0, 0.0, 1.0, 0.0);
         glRotatef(90, 1.0, 0.0, 0.0);
         glScalef(0.75, 0.1, 1.35);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 2);
         createTerrain();
+        glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
     //Montanha da esquerda
@@ -35,7 +41,10 @@ void drawScenario()
         glTranslatef(-30, 5.5, -2.0);
         glRotatef(90, 1.0, 0.0, 0.0);
         glScalef(0.25, 0.1, 0.5);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 2);
         createTerrain();
+        glDisable(GL_TEXTURE_2D);    
     glPopMatrix();
 }
 
